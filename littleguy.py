@@ -9,16 +9,33 @@ GREEN = (0x00, 0xFF, 0x00)
 RED = (0xFF, 0x00, 0x00)
 SKIN_WHITE = (0xE8, 0xCD, 0xA8)
 
-def draw_face():
-	img = pygame.image.load("littleguy.png")
-	screen.blit(img, (0, 0))
-#	pygame.draw.ellipse(screen, SKIN_WHITE, [50, 50, 50, 100])
-#	for i in range (12):
-#		pygame.draw.line(screen, BLACK, [50+2*i, 80-i], [50+2*i, 30-i], 2)
-#	pygame.draw.line(screen, BLACK, [74, 67], [74, 17], 2)
-#	for i in range (12):
-#		pygame.draw.line(screen, BLACK, [75+2*i, 68+i], [75+2*i, 18+i], 2)
+# little guy's position
+pos = pygame.mouse.get_pos()
+pos_x = pos[0]
+pos_y = pos[1]
+pygame.mouse.set_visible(False)
 
+# little guy's direction and speed
+change_x = 1
+change_y = 1
+
+# time to blink
+blink_timer = 0
+
+def draw_face(img_choice):
+	pos = pygame.mouse.get_pos()
+	#pos_x = pos[0]
+	#pos_y = pos[1]
+
+	if img_choice == 1:
+		face = pygame.image.load("littleguy.png")
+		screen.blit(face, (pos_x, pos_y))
+	if img_choice == 2:
+		face = pygame.image.load("littleguy_blink.png")
+		screen.blit(face, (pos_x, pos_y))
+		
+	body = pygame.image.load("body.png")
+	screen.blit(body, (pos_x, pos_y + 50))
 # set screen size
 size = (700, 500)
 screen = pygame.display.set_mode(size)
@@ -37,9 +54,28 @@ while not done:
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_ESCAPE:	
 				done = True
+			if event.key == pygame.K_LEFT:
+				pos_x -= change_x
+			if event.key == pygame.K_RIGHT:
+				pos_x += change_x
+			if event.key == pygame.K_UP:
+				pos_y -= change_y
+			if event.key == pygame.K_DOWN:
+				pos_y += change_y
+	#get current key pressed
+	keys = pygame.key.get_pressed()
+	if keys[pygame.K_LEFT]:
+		pos_x -= change_x
+	if keys[pygame.K_RIGHT]:
+		pos_x += change_x
+	if keys[pygame.K_UP]:
+		pos_y -= change_y
+	if keys[pygame.K_DOWN]:
+		pos_y += change_y
 	#--------------------------------------------------
 
 	#-------GAME LOGIC---------------------------------
+	blink_timer += 1
 	#-------------------------------------------------
 
 	#---------DRAWING--------------------------------
@@ -47,7 +83,12 @@ while not done:
 	screen.fill(WHITE)
 
 	# little guy's face
-	draw_face()
+	if blink_timer < 3000:
+		draw_face(1)
+	if blink_timer >= 3000:
+		draw_face(2)
+		if blink_timer > 3500:
+			blink_timer = 0
 
 	#update screen
 	pygame.display.flip()
