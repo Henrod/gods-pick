@@ -19,20 +19,35 @@ pygame.mouse.set_visible(False)
 change_x = 1
 change_y = 1
 
-# time to blink
+# timer to blink
 blink_timer = 0
+
+# timer to explode
+explode_timer = 0
+explode = False
 
 def draw_face(img_choice):
 	pos = pygame.mouse.get_pos()
 	#pos_x = pos[0]
 	#pos_y = pos[1]
 
-	if img_choice == 1:
-		face = pygame.image.load("littleguy.png")
-		screen.blit(face, (pos_x, pos_y))
-	if img_choice == 2:
-		face = pygame.image.load("littleguy_blink.png")
-		screen.blit(face, (pos_x, pos_y))
+	if not explode:
+		if img_choice == 1:
+			face = pygame.image.load("littleguy.png")
+			screen.blit(face, (pos_x, pos_y))
+		if img_choice == 2:
+			face = pygame.image.load("littleguy_blink.png")
+			screen.blit(face, (pos_x, pos_y))
+	if explode:
+		if explode_timer < 2000:
+			face = pygame.image.load("littleguy_blink.png")
+			screen.blit(face, (pos_x, pos_y))
+		if explode_timer >= 2000 and explode_timer < 4000:
+			face = pygame.image.load("littleguy_explode1.png")
+			screen.blit(face, (pos_x, pos_y))
+		if explode_timer >= 4000:
+			face = pygame.image.load("littleguy_explode2.png")
+			screen.blit(face, (pos_x, pos_y))
 		
 	body = pygame.image.load("body.png")
 	screen.blit(body, (pos_x, pos_y + 50))
@@ -62,6 +77,12 @@ while not done:
 				pos_y -= change_y
 			if event.key == pygame.K_DOWN:
 				pos_y += change_y
+			if event.key == pygame.K_SPACE:
+				explode = True
+		if event.type == pygame.KEYUP:
+			if event.key == pygame.K_SPACE:
+				explode = False
+				explode_timer = 0
 	#get current key pressed
 	keys = pygame.key.get_pressed()
 	if keys[pygame.K_LEFT]:
@@ -72,6 +93,8 @@ while not done:
 		pos_y -= change_y
 	if keys[pygame.K_DOWN]:
 		pos_y += change_y
+	if keys[pygame.K_SPACE]:
+		explode_timer += 1
 	#--------------------------------------------------
 
 	#-------GAME LOGIC---------------------------------
