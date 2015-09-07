@@ -26,7 +26,10 @@ blink_timer = 0
 explode_timer = 0
 explode = False
 
-def draw_face(img_choice):
+# rotate body
+body_angle = "center"
+
+def draw_face(img_choice, angle):
 	pos = pygame.mouse.get_pos()
 	#pos_x = pos[0]
 	#pos_y = pos[1]
@@ -49,8 +52,16 @@ def draw_face(img_choice):
 			face = pygame.image.load("littleguy_explode2.png")
 			screen.blit(face, (pos_x, pos_y))
 		
-	body = pygame.image.load("body.png")
-	screen.blit(body, (pos_x, pos_y + 50))
+	body = pygame.image.load("littleguy_body.png")
+	if angle == "center":
+		body_surf = pygame.transform.rotate(body, 0)
+		screen.blit(body_surf, (pos_x + 10, pos_y + 50))
+	if angle == "left":
+		body_surf = pygame.transform.rotate(body, 45)
+		screen.blit(body_surf, (pos_x + 10 , pos_y + 30))
+	if angle == "right":
+		body_surf = pygame.transform.rotate(body, -45)
+		screen.blit(body_surf, (pos_x - 30 , pos_y + 40))
 # set screen size
 size = (700, 500)
 screen = pygame.display.set_mode(size)
@@ -71,8 +82,10 @@ while not done:
 				done = True
 			if event.key == pygame.K_LEFT:
 				pos_x -= change_x
+				body_angle = "left"
 			if event.key == pygame.K_RIGHT:
 				pos_x += change_x
+				body_angle = "right"
 			if event.key == pygame.K_UP:
 				pos_y -= change_y
 			if event.key == pygame.K_DOWN:
@@ -83,6 +96,10 @@ while not done:
 			if event.key == pygame.K_SPACE:
 				explode = False
 				explode_timer = 0
+			if event.key == pygame.K_LEFT:
+				body_angle = "center"
+			if event.key == pygame.K_RIGHT:
+				body_angle = "center"
 	#get current key pressed
 	keys = pygame.key.get_pressed()
 	if keys[pygame.K_LEFT]:
@@ -107,9 +124,9 @@ while not done:
 
 	# little guy's face
 	if blink_timer < 3000:
-		draw_face(1)
+		draw_face(1, body_angle)
 	if blink_timer >= 3000:
-		draw_face(2)
+		draw_face(2, body_angle)
 		if blink_timer > 3500:
 			blink_timer = 0
 
