@@ -22,8 +22,8 @@ class Littleguy():
 	
 	def draw_face(self):
 		pos = pygame.mouse.get_pos()
-		#pos_x = pos[0]
-		#pos_y = pos[1]
+		#self.pos_x = pos[0]
+		#self.pos_y = pos[1]
 
 		if not self.explode:
 			if self.img_choice == 1:
