@@ -18,8 +18,8 @@ pos_y = pos[1]
 pygame.mouse.set_visible(False)
 
 # little guy's direction and speed
-change_x = 1
-change_y = 1
+change_x = 10
+change_y = 10
 
 # timer to blink
 blink_timer = 0
@@ -27,6 +27,7 @@ blink_timer = 0
 # set screen size
 size = (700, 500)
 screen = pygame.display.set_mode(size)
+
 # set screen title
 pygame.display.set_caption("Little Guy")
 
@@ -41,6 +42,14 @@ littleguy = Littleguy()
 littleguy.screen = screen
 littleguy.pos_x = pos_x
 littleguy.pos_y = pos_y
+
+littleguy2 = Littleguy()
+littleguy2.screen = screen
+littleguy2.pos_x = pos_x
+littleguy2.pos_y = pos_y
+littleguy2.explode = False
+littleguy2.img_choice = 1
+
 # rotate body
 littleguy.body_angle = "center"
 
@@ -70,6 +79,7 @@ while not done:
 				littleguy.body_angle = "center"
 			if event.key == pygame.K_RIGHT:
 				littleguy.body_angle = "center"
+				
 	#get current key pressed
 	keys = pygame.key.get_pressed()
 	if keys[pygame.K_LEFT]:
@@ -78,10 +88,18 @@ while not done:
 		littleguy.pos_x += change_x
 	if keys[pygame.K_UP]:
 		littleguy.pos_y -= change_y
+	elif littleguy.pos_y < 300:
+		littleguy.pos_y += change_y
 	if keys[pygame.K_DOWN]:
 		littleguy.pos_y += change_y
 	if keys[pygame.K_SPACE]:
 		littleguy.explode_timer += 1
+	
+
+	#--position for little guy 2
+	pos = pygame.mouse.get_pos()
+	littleguy2.pos_x = pos[0]
+	littleguy2.pos_y = pos[1]
 	#--------------------------------------------------
 
 	#-------GAME LOGIC---------------------------------
@@ -90,17 +108,22 @@ while not done:
 
 	#---------DRAWING--------------------------------
 	# background
-	screen.fill(WHITE)
+	#screen.fill(WHITE)
+	background = pygame.image.load("../images/background.png")
+	screen.blit(background, (0, 0))
 
 	# little guy's face
 	if blink_timer < 3000:
 		littleguy.img_choice = 1
 		littleguy.draw_face()
+		littleguy2.draw_face()
 	if blink_timer >= 3000:
 		littleguy.img_choice = 2
 		littleguy.draw_face()
+		littleguy2.draw_face()
 		if blink_timer > 3500:
 			blink_timer = 0
+	
 
 	#update screen
 	pygame.display.flip()
