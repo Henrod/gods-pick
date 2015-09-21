@@ -104,14 +104,14 @@ while not done:
 			littleguy.pos_x += change_x
 		if keys[pygame.K_UP]:
 			littleguy.pos_y -= change_y
-		elif littleguy.pos_y < 450:
-			littleguy.pos_y += change_y
 		if keys[pygame.K_DOWN] and littleguy.pos_y < 680:
 			littleguy.pos_y += change_y
 	if hand.picking and positionToPick:
 		littleguy.explode_timer += 5
 		littleguy.pos_x = hand.pos_x + 65
 		littleguy.pos_y = hand.pos_y + 230
+	elif littleguy.pos_y < 450:
+		littleguy.pos_y += change_y
 	
 
 	#--position for little guy 2
