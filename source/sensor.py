@@ -4,6 +4,7 @@
 import math
 import thread
 import time
+import smbus
 
 def read_byte(bus, adr):
     return bus.read_byte_data(address, adr)
