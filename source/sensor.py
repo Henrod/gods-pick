@@ -53,3 +53,6 @@ class Sensor():
 def f(data):
 	print data
 s = Sensor(0x68, data)
+
+while True:
+	time.sleep(10)
