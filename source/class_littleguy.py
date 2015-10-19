@@ -49,12 +49,12 @@ class Littleguy():
 		body = pygame.image.load("../images/littleguy_body.png")
 		if self.body_angle == "left" or self.last_pos_x > self.pos_x:
 			body_surf = pygame.transform.rotate(body, 45)
-			(self.screen).blit(body_surf, (self.pos_x + 10 , self.pos_y + 30))
+			(self.screen).blit(body_surf, (self.pos_x + 5 , self.pos_y + 15))
 		elif self.body_angle == "right" or self.last_pos_x < self.pos_x:
 			body_surf = pygame.transform.rotate(body, -45)
-			(self.screen).blit(body_surf, (self.pos_x - 30 , self.pos_y + 40))
+			(self.screen).blit(body_surf, (self.pos_x - 15 , self.pos_y + 20))
 		else: #self.body_angle == "center" or self.last_pos_x == self.pos_x:
 			body_surf = pygame.transform.rotate(body, 0)
-			(self.screen).blit(body_surf, (self.pos_x + 10, self.pos_y + 50))
+			(self.screen).blit(body_surf, (self.pos_x + 5, self.pos_y + 25))
 
 		self.last_pos_x = self.pos_x

@@ -92,7 +92,7 @@ while not done:
 				littleguy.body_angle = "center"
 
 	if hand.picking and (not positionToPick):
-		if ((littleguy.pos_x - 10) < (hand.pos_x + 65)) and ((littleguy.pos_x + 10) > (hand.pos_x + 65)) and ((littleguy.pos_y - 10) < (hand.pos_y + 230)) and ((littleguy.pos_y + 10) > (hand.pos_y + 230)):
+		if ((littleguy.pos_x - 10) < (hand.pos_x + 32)) and ((littleguy.pos_x + 10) > (hand.pos_x + 32)) and ((littleguy.pos_y - 10) < (hand.pos_y + 115)) and ((littleguy.pos_y + 10) > (hand.pos_y + 115)):
 			positionToPick = True
 				
 	#get current key pressed
@@ -108,9 +108,9 @@ while not done:
 			littleguy.pos_y += change_y
 	if hand.picking and positionToPick:
 		littleguy.explode_timer += 5
-		littleguy.pos_x = hand.pos_x + 65
-		littleguy.pos_y = hand.pos_y + 230
-	elif littleguy.pos_y < 450:
+		littleguy.pos_x = hand.pos_x + 32
+		littleguy.pos_y = hand.pos_y + 115
+	elif littleguy.pos_y < 500:
 		littleguy.pos_y += change_y
 	
 
