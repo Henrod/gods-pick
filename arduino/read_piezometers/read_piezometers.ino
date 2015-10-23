@@ -34,10 +34,11 @@ void loop() {
   if (val >= 900)
     out++;
  
- /* Serial.println(val);*/
- if (val >= 4) {
+ 
+ if (val >= 50) {
+   Serial.println(val);
     count_fraco++;
-    if (val >= 9)
+    if (val >= 70)
       count_medio++;
  }
  else {
@@ -47,12 +48,12 @@ void loop() {
 
  if (count == READS) {
     if (count_fraco >= N_FRACO) {
-       if (count_medio >= N_MEDIO)
-          Serial.println("Medio apertado");
-       else
+         if (count_medio >= N_MEDIO)
+           Serial.println("Medio Apertado");
+        else
           Serial.println("Pouco Apertado");
     }
-   
+    
     else
       Serial.println("NAO APERTADO");
     count = count_fraco = count_medio = count_forte = 0;
