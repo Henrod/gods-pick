@@ -7,8 +7,8 @@ import math
 
 from class_littleguy import *
 from class_hand import *
-import sensor
-import bad_gpio_read as IOREAD
+#import bad_gpio_read as IOREAD
+from get_accel import *
 
 BLACK = (0x00, 0x00, 0x00)
 WHITE = (0xFF, 0xFF, 0xFF)
@@ -25,6 +25,9 @@ pygame.mouse.set_visible(False)
 # little guy's direction and speed
 change_x = 20
 change_y = 20
+# hand's direction and speed
+hand_change_x = 4
+hand_change_y = 4
 
 # timer to blink
 blink_timer = 0
@@ -55,11 +58,11 @@ littleguy.body_angle = "center"
 hand = Hand()
 hand.screen = screen
 positionToPick = False #well positined above little guy
+move_range_x = 0.2
+move_range_y = 0.2
 
 while not done:
 	#--------MAIN EVENT LOOP----------------------------
-	print sensor.read_word_2c(0x3b)
-	print sensor.read_word_2c(0x3d)
 	for event in pygame.event.get():
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_ESCAPE:	
@@ -88,23 +91,25 @@ while not done:
 			if event.key == pygame.K_RIGHT:
 				littleguy.body_angle = "center"
 	
-	"""
 	# move in x-axis
-	if (sensor.accel_scaled_x() > 1):
-		littleguy.pos_x += change_x
-		littleguy.body_angle = "right"
-	elif (sensor.accel_scaled_x() < 1 ):
-		littleguy.pos_x -= change_x
-		littleguy.body_angle = "left"
-	else:
-		littleguy.body_angle = "center"
+	if (accel_scaled_x() > move_range_x and hand.pos_x < 800):
+	#	if (accel_scaled_x() > 4 * move_range_x):
+	#		hand.pos_x += hand_change_x
+		hand.pos_x += hand_change_x
+	elif (accel_scaled_x() < -move_range_x and hand.pos_x > 0):
+	#	if (accel_scaled_x() < -4 * move_range_x):
+	#		hand.pos_x -= hand_change_x
+		hand.pos_x -= hand_change_x
 
 	# move in y-axis
-	if (sensor.accel_scaled_y() > 1):
-		littleguy.pos_y -= change_y
-	elif (sensor.accel_scaled_y() < 1 and littleguy.pos_y < 380):
-		littleguy.pos_y += change_y
-	"""
+	if (accel_scaled_y() > move_range_y and hand.pos_y < 500):
+	#	if (accel_scaled_y() > 4 * move_range_y):	
+	#		hand.pos_y += hand_change_y
+		hand.pos_y += hand_change_y
+	elif (accel_scaled_y() < -move_range_y and hand.pos_y > 0):
+	#	if (accel_scaled_y() < -4 * move_range_y):	
+	#		hand.pos_y -= hand_change_y
+		hand.pos_y -= hand_change_y
 		
 	# gets if hand is well positioned to pick guy
 	if hand.picking and (not positionToPick):
@@ -131,19 +136,15 @@ while not done:
 		littleguy.pos_y += change_y
 	
 
-	#--position for little guy 2
-	pos = pygame.mouse.get_pos()
-	#--------------------------------------------------
-
 	#-------GAME LOGIC---------------------------------
 	blink_timer += 1
 	#-------------------------------------------------
 
 	#---------DRAWING--------------------------------
 	# background
-	#screen.fill(WHITE)
-	background = pygame.image.load("../images/background.png")
-	screen.blit(background, (0, 0))
+	screen.fill(WHITE)
+	#background = pygame.image.load("../images/background.png")
+	#screen.blit(background, (0, 0))
 
 	# little guy's face
 	if blink_timer < 80:

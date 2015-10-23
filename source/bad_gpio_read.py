@@ -21,7 +21,8 @@ def get_force():
 			return 0
 		else:
 			return -1
-		sleep (1)
 
 while True:
 	print get_force()
+	sleep(10)
+
