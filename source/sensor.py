@@ -1,6 +1,5 @@
 #!/usr/bin/python
  
-#import smbus
 import math
 import thread
 import time
@@ -23,6 +22,12 @@ def read_word_2c(bus, adr):
         return -((65535 - val) + 1)
     else:
         return val
+
+def accel_scaled_x():
+	return read_word_2c(bus, 0x3b) / 16384.0
+
+def accel_scaled_y():
+	return read_word_2c(bus, 0x3d) / 16384.0
 
 class Sensor():
 	bus = smbus.SMBus(1)

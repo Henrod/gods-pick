@@ -36,13 +36,13 @@ class Littleguy():
 				face = pygame.image.load("../images/littleguy_blink.png")
 				(self.screen).blit(face, (self.pos_x, self.pos_y))
 		if self.explode:
-			if self.explode_timer < 100:
+			if self.explode_timer == 1: #< 100:
 				face = pygame.image.load("../images/littleguy_blink.png")
 				(self.screen).blit(face, (self.pos_x, self.pos_y))
-			if self.explode_timer >= 100 and self.explode_timer < 200:
+			if self.explode_timer == 2: #>= 100 and self.explode_timer < 200:
 				face = pygame.image.load("../images/littleguy_explode1.png")
 				(self.screen).blit(face, (self.pos_x, self.pos_y))
-			if self.explode_timer >= 200:
+			if self.explode_timer == 3: #>= 200:
 				face = pygame.image.load("../images/littleguy_explode2.png")
 				(self.screen).blit(face, (self.pos_x, self.pos_y))
 			
@@ -53,7 +53,7 @@ class Littleguy():
 		elif self.body_angle == "right" or self.last_pos_x < self.pos_x:
 			body_surf = pygame.transform.rotate(body, -45)
 			(self.screen).blit(body_surf, (self.pos_x - 15 , self.pos_y + 20))
-		else: #self.body_angle == "center" or self.last_pos_x == self.pos_x:
+		else: 
 			body_surf = pygame.transform.rotate(body, 0)
 			(self.screen).blit(body_surf, (self.pos_x + 5, self.pos_y + 25))
 

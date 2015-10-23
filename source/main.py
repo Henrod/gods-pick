@@ -7,6 +7,8 @@ import math
 
 from class_littleguy import *
 from class_hand import *
+import sensor
+import bad_gpio_read as IOREAD
 
 BLACK = (0x00, 0x00, 0x00)
 WHITE = (0xFF, 0xFF, 0xFF)
@@ -46,13 +48,6 @@ littleguy.screen = screen
 littleguy.pos_x = pos_x
 littleguy.pos_y = pos_y
 
-#littleguy2 = Littleguy()
-#littleguy2.screen = screen
-#littleguy2.pos_x = pos_x
-#littleguy2.pos_y = pos_y
-#littleguy2.explode = False
-#littleguy2.img_choice = 1
-
 # rotate body
 littleguy.body_angle = "center"
 
@@ -63,6 +58,8 @@ positionToPick = False #well positined above little guy
 
 while not done:
 	#--------MAIN EVENT LOOP----------------------------
+	print sensor.read_word_2c(0x3b)
+	print sensor.read_word_2c(0x3d)
 	for event in pygame.event.get():
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_ESCAPE:	
@@ -90,7 +87,26 @@ while not done:
 				littleguy.body_angle = "center"
 			if event.key == pygame.K_RIGHT:
 				littleguy.body_angle = "center"
+	
+	"""
+	# move in x-axis
+	if (sensor.accel_scaled_x() > 1):
+		littleguy.pos_x += change_x
+		littleguy.body_angle = "right"
+	elif (sensor.accel_scaled_x() < 1 ):
+		littleguy.pos_x -= change_x
+		littleguy.body_angle = "left"
+	else:
+		littleguy.body_angle = "center"
 
+	# move in y-axis
+	if (sensor.accel_scaled_y() > 1):
+		littleguy.pos_y -= change_y
+	elif (sensor.accel_scaled_y() < 1 and littleguy.pos_y < 380):
+		littleguy.pos_y += change_y
+	"""
+		
+	# gets if hand is well positioned to pick guy
 	if hand.picking and (not positionToPick):
 		if ((littleguy.pos_x - 10) < (hand.pos_x + 32)) and ((littleguy.pos_x + 10) > (hand.pos_x + 32)) and ((littleguy.pos_y - 10) < (hand.pos_y + 115)) and ((littleguy.pos_y + 10) > (hand.pos_y + 115)):
 			positionToPick = True
@@ -107,7 +123,8 @@ while not done:
 		if keys[pygame.K_DOWN] and littleguy.pos_y < 680:
 			littleguy.pos_y += change_y
 	if hand.picking and positionToPick:
-		littleguy.explode_timer += 5
+		#littleguy.explode_timer += 5
+		littleguy.explode_timer = IOREAD.get_force()
 		littleguy.pos_x = hand.pos_x + 32
 		littleguy.pos_y = hand.pos_y + 115
 	elif littleguy.pos_y < 500:
@@ -116,8 +133,6 @@ while not done:
 
 	#--position for little guy 2
 	pos = pygame.mouse.get_pos()
-	#littleguy2.pos_x = pos[0]
-	#littleguy2.pos_y = pos[1]
 	#--------------------------------------------------
 
 	#-------GAME LOGIC---------------------------------
@@ -134,11 +149,9 @@ while not done:
 	if blink_timer < 80:
 		littleguy.img_choice = 1
 		littleguy.draw_face()
-		#littleguy2.draw_face()
 	if blink_timer >= 80:
 		littleguy.img_choice = 2
 		littleguy.draw_face()
-		#littleguy2.draw_face()
 		if blink_timer > 100:
 			blink_timer = 0
 	hand.draw_hand();
