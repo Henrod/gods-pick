@@ -142,9 +142,9 @@ while not done:
 
 	#---------DRAWING--------------------------------
 	# background
-	#screen.fill(WHITE)
-	background = pygame.image.load("../images/background.png")
-	screen.blit(background, (0, 0))
+	screen.fill(WHITE)
+	#background = pygame.image.load("../images/background.png")
+	#screen.blit(background, (0, 0))
 
 	# little guy's face
 	if blink_timer < 80:
