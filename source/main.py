@@ -26,8 +26,8 @@ pygame.mouse.set_visible(False)
 change_x = 20
 change_y = 20
 # hand's direction and speed
-hand_change_x = 4
-hand_change_y = 4
+hand_change_x = 10
+hand_change_y = 10
 
 # timer to blink
 blink_timer = 0
@@ -93,22 +93,22 @@ while not done:
 	
 	# move in x-axis
 	if (accel_scaled_x() > move_range_x and hand.pos_x < 800):
-	#	if (accel_scaled_x() > 4 * move_range_x):
-	#		hand.pos_x += hand_change_x
+		if (accel_scaled_x() > 4 * move_range_x):
+			hand.pos_x += hand_change_x
 		hand.pos_x += hand_change_x
 	elif (accel_scaled_x() < -move_range_x and hand.pos_x > 0):
-	#	if (accel_scaled_x() < -4 * move_range_x):
-	#		hand.pos_x -= hand_change_x
+		if (accel_scaled_x() < -4 * move_range_x):
+			hand.pos_x -= hand_change_x
 		hand.pos_x -= hand_change_x
 
 	# move in y-axis
 	if (accel_scaled_y() > move_range_y and hand.pos_y < 500):
-	#	if (accel_scaled_y() > 4 * move_range_y):	
-	#		hand.pos_y += hand_change_y
+		if (accel_scaled_y() > 4 * move_range_y):	
+			hand.pos_y += hand_change_y
 		hand.pos_y += hand_change_y
 	elif (accel_scaled_y() < -move_range_y and hand.pos_y > 0):
-	#	if (accel_scaled_y() < -4 * move_range_y):	
-	#		hand.pos_y -= hand_change_y
+		if (accel_scaled_y() < -4 * move_range_y):	
+			hand.pos_y -= hand_change_y
 		hand.pos_y -= hand_change_y
 		
 	# gets if hand is well positioned to pick guy
@@ -142,9 +142,9 @@ while not done:
 
 	#---------DRAWING--------------------------------
 	# background
-	screen.fill(WHITE)
-	#background = pygame.image.load("../images/background.png")
-	#screen.blit(background, (0, 0))
+	#screen.fill(WHITE)
+	background = pygame.image.load("../images/background.png")
+	screen.blit(background, (0, 0))
 
 	# little guy's face
 	if blink_timer < 80:
