@@ -1,7 +1,7 @@
 const int piezometer0 = A0, piezometer1 = A1;
 const int READS = 50;
-const int N_FRACO = 4;
-const int N_MEDIO = 4;
+const int N_FRACO = 3;
+const int N_MEDIO = 3;
 const int N_FORTE = 3;
 const int OUT_0 = 3, OUT_1 = 4;
 
@@ -25,20 +25,11 @@ int estado = 0;
 
 void loop() {
   // put your main code here, to run repeatedly:
-  int val = analogRead(piezometer0);/* + analogRead(piezometer1);*/
-  int out = 0;
-  if (val >= 400)
-    out++;
-  if (val >= 700)
-    out++;
-  if (val >= 900)
-    out++;
- 
- 
- if (val >= 50) {
-   Serial.println(val);
+  int val0 = analogRead(piezometer0);
+  int val1 = analogRead(piezometer1);
+  if (val0 >= 15 || val1 >= 15) {
     count_fraco++;
-    if (val >= 70)
+    if (val0 >= 15 && val1 >= 15)
       count_medio++;
  }
  else {
@@ -48,14 +39,24 @@ void loop() {
 
  if (count == READS) {
     if (count_fraco >= N_FRACO) {
-         if (count_medio >= N_MEDIO)
-           Serial.println("Medio Apertado");
-        else
-          Serial.println("Pouco Apertado");
+          if (count_medio >= N_MEDIO) {
+            Serial.println("Medio Apertado");
+            digitalWrite(OUT_1, HIGH);
+            digitalWrite(OUT_0, HIGH); 
+          }
+          else {
+            Serial.println("Pouco Apertado");
+            digitalWrite(OUT_0, HIGH);
+            digitalWrite(OUT_1, LOW);
+          }
+    }
+    else {
+      Serial.println("NAO APERTADO");
+      digitalWrite(OUT_0, LOW);
+      digitalWrite(OUT_1, LOW);
+      
     }
     
-    else
-      Serial.println("NAO APERTADO");
     count = count_fraco = count_medio = count_forte = 0;
  }
   delay(10);
