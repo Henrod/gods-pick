@@ -17,8 +17,8 @@ class Hand():
 		
 	def draw_hand(self):
 		pos = pygame.mouse.get_pos()
-		self.pos_x = pos[0]
-		self.pos_y = pos[1]
+		#self.pos_x = pos[0]
+		#self.pos_y = pos[1]
 
 		if self.picking:
 			hand = pygame.image.load("../images/pick.png")
