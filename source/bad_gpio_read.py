@@ -10,19 +10,16 @@ GPIO.setup (INPUT_PIN_LOW, GPIO.IN)
 GPIO.setup (INPUT_PIN_HIGH, GPIO.IN)
 
 def get_force():
-	while True:
-		if (GPIO.input(INPUT_PIN_HIGH) and GPIO.input(INPUT_PIN_LOW)):
-			return 3
-		elif (GPIO.input(INPUT_PIN_HIGH) and not GPIO.input(INPUT_PIN_LOW)):
-			return 2
-		elif (not GPIO.input(INPUT_PIN_HIGH) and GPIO.input(INPUT_PIN_LOW)):
-			return 1
-		elif (not GPIO.input(INPUT_PIN_HIGH) and not GPIO.input(INPUT_PIN_LOW)):
-			return 0
-		else:
-			return -1
+	if (GPIO.input(INPUT_PIN_HIGH) and GPIO.input(INPUT_PIN_LOW)):
+		return 3
+	elif (GPIO.input(INPUT_PIN_HIGH) and not GPIO.input(INPUT_PIN_LOW)):
+		return 2
+	elif (not GPIO.input(INPUT_PIN_HIGH) and GPIO.input(INPUT_PIN_LOW)):
+		return 1
+	elif (not GPIO.input(INPUT_PIN_HIGH) and not GPIO.input(INPUT_PIN_LOW)):
+		return 0
+	else:
+		return -1
 
-while True:
-	print get_force()
-	sleep(10)
+
 

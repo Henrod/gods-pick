@@ -7,7 +7,7 @@ import math
 
 from class_littleguy import *
 from class_hand import *
-#import bad_gpio_read as IOREAD
+import bad_gpio_read as IOREAD
 from get_accel import *
 
 BLACK = (0x00, 0x00, 0x00)
@@ -78,8 +78,9 @@ while not done:
 			if event.key == pygame.K_DOWN and littleguy.pos_y < 380:
 				littleguy.pos_y += change_y
 			if event.key == pygame.K_SPACE:
-				hand.picking = True
-				littleguy.explode = True
+				pass
+				#hand.picking = True
+				#littleguy.explode = True
 		if event.type == pygame.KEYUP:
 			if event.key == pygame.K_SPACE:
 				hand.picking = False
@@ -90,7 +91,7 @@ while not done:
 				littleguy.body_angle = "center"
 			if event.key == pygame.K_RIGHT:
 				littleguy.body_angle = "center"
-	
+	hand.picking = get_force() == 2
 	# move in x-axis
 	if (accel_scaled_x() > move_range_x and hand.pos_x < 800):
 		if (accel_scaled_x() > 4 * move_range_x):
