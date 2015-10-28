@@ -62,6 +62,7 @@ move_range_x = 0.2
 move_range_y = 0.2
 
 while not done:
+	force = IOREAD.get_force()
 	#--------MAIN EVENT LOOP----------------------------
 	for event in pygame.event.get():
 		if event.type == pygame.KEYDOWN:
@@ -77,10 +78,6 @@ while not done:
 				littleguy.pos_y -= change_y
 			if event.key == pygame.K_DOWN and littleguy.pos_y < 380:
 				littleguy.pos_y += change_y
-			if event.key == pygame.K_SPACE:
-				pass
-				#hand.picking = True
-				#littleguy.explode = True
 		if event.type == pygame.KEYUP:
 			if event.key == pygame.K_SPACE:
 				hand.picking = False
@@ -91,26 +88,37 @@ while not done:
 				littleguy.body_angle = "center"
 			if event.key == pygame.K_RIGHT:
 				littleguy.body_angle = "center"
-	hand.picking = get_force() == 2
-	# move in x-axis
-	if (accel_scaled_x() > move_range_x and hand.pos_x < 800):
-		if (accel_scaled_x() > 4 * move_range_x):
-			hand.pos_x += hand_change_x
-		hand.pos_x += hand_change_x
-	elif (accel_scaled_x() < -move_range_x and hand.pos_x > 0):
-		if (accel_scaled_x() < -4 * move_range_x):
-			hand.pos_x -= hand_change_x
-		hand.pos_x -= hand_change_x
 
-	# move in y-axis
-	if (accel_scaled_y() > move_range_y and hand.pos_y < 500):
-		if (accel_scaled_y() > 4 * move_range_y):	
+	if (force == 2):
+		hand.picking = True
+	else:
+		hand.picking = False
+		littleguy.explode = False
+		positionToPick = False
+		
+
+	try :
+		# move in x-axis
+		if (accel_scaled_x() > move_range_x and hand.pos_x < 800):
+			if (accel_scaled_x() > 4 * move_range_x):
+				hand.pos_x += hand_change_x
+			hand.pos_x += hand_change_x
+		elif (accel_scaled_x() < -move_range_x and hand.pos_x > 0):
+			if (accel_scaled_x() < -4 * move_range_x):
+				hand.pos_x -= hand_change_x
+			hand.pos_x -= hand_change_x
+
+		# move in y-axis
+		if (accel_scaled_y() > move_range_y and hand.pos_y < 500):
+			if (accel_scaled_y() > 4 * move_range_y):	
+				hand.pos_y += hand_change_y
 			hand.pos_y += hand_change_y
-		hand.pos_y += hand_change_y
-	elif (accel_scaled_y() < -move_range_y and hand.pos_y > 0):
-		if (accel_scaled_y() < -4 * move_range_y):	
+		elif (accel_scaled_y() < -move_range_y and hand.pos_y > 0):
+			if (accel_scaled_y() < -4 * move_range_y):	
+				hand.pos_y -= hand_change_y
 			hand.pos_y -= hand_change_y
-		hand.pos_y -= hand_change_y
+	except:
+		pass
 		
 	# gets if hand is well positioned to pick guy
 	if hand.picking and (not positionToPick):
@@ -130,7 +138,7 @@ while not done:
 			littleguy.pos_y += change_y
 	if hand.picking and positionToPick:
 		#littleguy.explode_timer += 5
-		littleguy.explode_timer = IOREAD.get_force()
+		littleguy.explode_timer = force
 		littleguy.pos_x = hand.pos_x + 32
 		littleguy.pos_y = hand.pos_y + 115
 	elif littleguy.pos_y < 500:
