@@ -40,7 +40,13 @@ address = 0x68       # This is the address value read via the i2cdetect command
 # Now wake the 6050 up as it starts in sleep mode
 bus.write_byte_data(address, power_mgmt_1, 0)
  
-print "gyro data"
+def accel_scaled_x():
+	return read_word_2c(0x3b) / 16384.0
+
+def accel_scaled_y():
+	return read_word_2c(0x3d) / 16384.0
+
+"""print "gyro data"
 print "---------"
  
 gyro_xout = read_word_2c(0x43)
@@ -69,3 +75,4 @@ print "accel_zout: ", accel_zout, " scaled: ", accel_zout_scaled
  
 print "x rotation: " , get_x_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled)
 print "y rotation: " , get_y_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled)
+"""
