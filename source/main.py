@@ -18,11 +18,11 @@ pos_y = 500
 pygame.mouse.set_visible(False)
 
 # little guy's direction and speed
-change_x = 20
-change_y = 20
+change_x = 50
+change_y = 50
 # hand's direction and speed
-hand_change_x = 10
-hand_change_y = 10
+hand_change_x = 25
+hand_change_y = 25
 
 # timer to blink
 blink_timer = 0
@@ -147,7 +147,7 @@ while not done:
 	#---------DRAWING--------------------------------
 	# background
 	#screen.fill(WHITE)
-	background = pygame.image.load("../images/background.jpg")
+	background = pygame.image.load("../images/background.jpg").convert()
 	screen.blit(background, (0, 0))
 
 	# little guy's face
