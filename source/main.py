@@ -2,6 +2,7 @@
 
 import pygame
 pygame.init()
+myfont = pygame.font.SysFont("monospace", 15)
 
 import math
 from class_littleguy import *
@@ -10,6 +11,7 @@ from class_hand import *
 from get_accel import *
 
 WHITE = (0xFF, 0xFF, 0xFF)
+BLUE = (0x00, 0x00, 0x44)
 
 # little guy's position
 pos = pygame.mouse.get_pos()
@@ -36,6 +38,7 @@ pygame.display.set_caption("Little Guy")
 
 # boolean to continue loop
 done = False
+start_game = False
 
 # manage how fast the screen updates
 clock = pygame.time.Clock()
@@ -56,7 +59,17 @@ positionToPick = False #well positined above little guy
 move_range_x = 0.2
 move_range_y = 0.2
 
+
 while not done:
+	while not start_game:
+		screen.fill(WHITE)
+		text = myfont.render("Aperte alguma tecla para iniciar o game", 1, BLUE)
+		screen.blit(text, (480, 350))
+		for event in pygame.event.get():
+			if event.type == pygame.KEYDOWN:
+				start_game = True
+		pygame.display.flip()
+
 	#force = IOREAD.get_force()
 	#--------MAIN EVENT LOOP----------------------------
 	for event in pygame.event.get():
@@ -73,6 +86,8 @@ while not done:
 				littleguy.pos_y -= change_y
 			if event.key == pygame.K_DOWN and littleguy.pos_y < 380:
 				littleguy.pos_y += change_y
+			if event.key == pygame.K_SPACE:
+				hand.picking = True
 		if event.type == pygame.KEYUP:
 			if event.key == pygame.K_SPACE:
 				hand.picking = False
@@ -136,8 +151,12 @@ while not done:
 		#littleguy.explode_timer = force
 		littleguy.pos_x = hand.pos_x + 32
 		littleguy.pos_y = hand.pos_y + 115
-	elif littleguy.pos_y < 500:
-		littleguy.pos_y += change_y
+	elif littleguy.pos_x < 175:
+		if littleguy.pos_y < 200:
+			littleguy.pos_y += change_y
+	else:
+		if littleguy.pos_y < 620:
+			littleguy.pos_y += change_y
 	
 
 	#-------GAME LOGIC---------------------------------
