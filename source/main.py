@@ -7,7 +7,7 @@ import math
 
 from class_littleguy import *
 from class_hand import *
-import bad_gpio_read as IOREAD
+#import bad_gpio_read as IOREAD
 from get_accel import *
 
 BLACK = (0x00, 0x00, 0x00)
@@ -62,7 +62,7 @@ move_range_x = 0.2
 move_range_y = 0.2
 
 while not done:
-	force = IOREAD.get_force()
+	#force = IOREAD.get_force()
 	#--------MAIN EVENT LOOP----------------------------
 	for event in pygame.event.get():
 		if event.type == pygame.KEYDOWN:
@@ -88,14 +88,14 @@ while not done:
 				littleguy.body_angle = "center"
 			if event.key == pygame.K_RIGHT:
 				littleguy.body_angle = "center"
-
+	"""
 	if (force == 2):
 		hand.picking = True
 	else:
 		hand.picking = False
 		littleguy.explode = False
 		positionToPick = False
-		
+	"""	
 
 	try :
 		# move in x-axis
@@ -138,7 +138,7 @@ while not done:
 			littleguy.pos_y += change_y
 	if hand.picking and positionToPick:
 		#littleguy.explode_timer += 5
-		littleguy.explode_timer = force
+		#littleguy.explode_timer = force
 		littleguy.pos_x = hand.pos_x + 32
 		littleguy.pos_y = hand.pos_y + 115
 	elif littleguy.pos_y < 500:
@@ -151,9 +151,9 @@ while not done:
 
 	#---------DRAWING--------------------------------
 	# background
-	screen.fill(WHITE)
-	#background = pygame.image.load("../images/background.png")
-	#screen.blit(background, (0, 0))
+	#screen.fill(WHITE)
+	background = pygame.image.load("../images/background.png")
+	screen.blit(background, (0, 0))
 
 	# little guy's face
 	if blink_timer < 80:
