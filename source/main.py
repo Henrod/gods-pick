@@ -4,17 +4,12 @@ import pygame
 pygame.init()
 
 import math
-
 from class_littleguy import *
 from class_hand import *
-import bad_gpio_read as IOREAD
+#import bad_gpio_read as IOREAD
 from get_accel import *
 
-BLACK = (0x00, 0x00, 0x00)
 WHITE = (0xFF, 0xFF, 0xFF)
-GREEN = (0x00, 0xFF, 0x00)
-RED = (0xFF, 0x00, 0x00)
-SKIN_WHITE = (0xE8, 0xCD, 0xA8)
 
 # little guy's position
 pos = pygame.mouse.get_pos()
@@ -62,7 +57,7 @@ move_range_x = 0.2
 move_range_y = 0.2
 
 while not done:
-	force = IOREAD.get_force()
+	#force = IOREAD.get_force()
 	#--------MAIN EVENT LOOP----------------------------
 	for event in pygame.event.get():
 		if event.type == pygame.KEYDOWN:
