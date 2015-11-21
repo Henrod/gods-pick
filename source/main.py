@@ -7,11 +7,18 @@ myfont = pygame.font.SysFont("monospace", 15)
 import math
 from class_littleguy import *
 from class_hand import *
-#import bad_gpio_read as IOREAD
+import bad_gpio_read as IOREAD
 from get_accel import *
+import time
 
 WHITE = (0xFF, 0xFF, 0xFF)
 BLUE = (0x00, 0x00, 0x44)
+
+#timer between picks
+show_time = False
+get_start = True
+start = 0
+end = 0
 
 # little guy's position
 pos = pygame.mouse.get_pos()
@@ -70,7 +77,8 @@ while not done:
 				start_game = True
 		pygame.display.flip()
 
-	#force = IOREAD.get_force()
+
+	force = IOREAD.get_force()
 	#--------MAIN EVENT LOOP----------------------------
 	for event in pygame.event.get():
 		if event.type == pygame.KEYDOWN:
@@ -87,25 +95,23 @@ while not done:
 			if event.key == pygame.K_DOWN and littleguy.pos_y < 380:
 				littleguy.pos_y += change_y
 			if event.key == pygame.K_SPACE:
-				hand.picking = True
+				hand.picking = not hand.picking
+				if not hand.picking:
+					get_start = True
 		if event.type == pygame.KEYUP:
-			if event.key == pygame.K_SPACE:
-				hand.picking = False
-				positionToPick = False
-				littleguy.explode = False
-				littleguy.explode_timer = 0
 			if event.key == pygame.K_LEFT:
 				littleguy.body_angle = "center"
 			if event.key == pygame.K_RIGHT:
 				littleguy.body_angle = "center"
-	"""
+	
 	if (force == 2):
 		hand.picking = True
+		show_time = False
 	else:
 		hand.picking = False
 		littleguy.explode = False
 		positionToPick = False
-	"""	
+		get_start = True
 
 	try :
 		# move in x-axis
@@ -132,7 +138,7 @@ while not done:
 		
 	# gets if hand is well positioned to pick guy
 	if hand.picking and (not positionToPick):
-		if ((littleguy.pos_x - 10) < (hand.pos_x + 32)) and ((littleguy.pos_x + 10) > (hand.pos_x + 32)) and ((littleguy.pos_y - 10) < (hand.pos_y + 115)) and ((littleguy.pos_y + 10) > (hand.pos_y + 115)):
+		if ((littleguy.pos_x - 20) < (hand.pos_x + 32)) and ((littleguy.pos_x + 20) > (hand.pos_x + 32)) and ((littleguy.pos_y - 20) < (hand.pos_y + 115)) and ((littleguy.pos_y + 20) > (hand.pos_y + 115)):
 			positionToPick = True
 				
 	#get current key pressed
@@ -147,15 +153,22 @@ while not done:
 		if keys[pygame.K_DOWN] and littleguy.pos_y < 680:
 			littleguy.pos_y += change_y
 	if hand.picking and positionToPick:
+		if get_start:
+			start = int(time.time()*1000)
+			get_start = False
 		#littleguy.explode_timer += 5
 		#littleguy.explode_timer = force
 		littleguy.pos_x = hand.pos_x + 32
 		littleguy.pos_y = hand.pos_y + 115
+		show_time = False
 	elif littleguy.pos_x < 175:
-		if littleguy.pos_y < 200:
+		if littleguy.pos_y < 180:
 			littleguy.pos_y += change_y
+			if littleguy.pos_y > 175 and not show_time:
+				end = int(time.time()*1000)
+				show_time = True
 	else:
-		if littleguy.pos_y < 620:
+		if littleguy.pos_y < 500:
 			littleguy.pos_y += change_y
 	
 
@@ -180,6 +193,11 @@ while not done:
 			blink_timer = 0
 	hand.draw_hand();
 	
+	if show_time:
+		diff = (end - start)/1000.0	
+		diff = "%.2f" % diff
+		text = myfont.render("TEMPO: " + str(diff) + "s", 1, BLUE)
+		screen.blit(text, (30, 30))
 
 	#update screen
 	pygame.display.flip()
