@@ -27,9 +27,10 @@ void loop() {
   // put your main code here, to run repeatedly:
   int val0 = analogRead(piezometer0);
   int val1 = analogRead(piezometer1);
-  if (val0 >= 15 || val1 >= 15) {
+  
+  if (val0 >= 20 || val1 >= 20) {
     count_fraco++;
-    if (val0 >= 15 && val1 >= 15)
+    if (val0 >= 20 && val1 >= 0)
       count_medio++;
  }
  else {
@@ -40,24 +41,18 @@ void loop() {
  if (count == READS) {
     if (count_fraco >= N_FRACO) {
           if (count_medio >= N_MEDIO) {
-            Serial.println("Medio Apertado");
-            digitalWrite(OUT_1, HIGH);
-            digitalWrite(OUT_0, HIGH); 
+            Serial.println(2);
           }
           else {
-            Serial.println("Pouco Apertado");
-            digitalWrite(OUT_0, HIGH);
-            digitalWrite(OUT_1, LOW);
+            Serial.println(1);
           }
     }
     else {
-      Serial.println("NAO APERTADO");
-      digitalWrite(OUT_0, LOW);
-      digitalWrite(OUT_1, LOW);
+      Serial.println(0);
       
     }
     
     count = count_fraco = count_medio = count_forte = 0;
  }
-  delay(10);
+  delay(20);
 }
