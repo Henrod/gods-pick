@@ -7,6 +7,26 @@ import math
 power_mgmt_1 = 0x6b
 power_mgmt_2 = 0x6c
  
+def try_io(call, tries=100):
+    assert tries > 0
+    error = None
+    result = None
+
+    while tries:
+        try:
+            result = call()
+        except IOError as e:
+            error = e
+            tries -= 1
+        else:
+            break
+
+    if not tries:
+        raise error
+
+    return result
+
+
 def read_byte(adr):
     return bus.read_byte_data(address, adr)
  
@@ -38,7 +58,8 @@ bus = smbus.SMBus(1) # or bus = smbus.SMBus(1) for Revision 2 boards
 address = 0x68       # This is the address value read via the i2cdetect command
  
 # Now wake the 6050 up as it starts in sleep mode
-bus.write_byte_data(address, power_mgmt_1, 0)
+#bus.write_byte_data(address, power_mgmt_1, 0)
+try_io(lambda: bus.write_byte_data(address, power_mgmt_1, 0))
  
 def accel_scaled_x():
 	return read_word_2c(0x3b) / 16384.0

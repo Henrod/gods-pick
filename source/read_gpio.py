@@ -4,8 +4,8 @@ from time import sleep
 import RPi.GPIO as GPIO #gets GPIO pins and call them as GPIO.
 
 GPIO.setmode (GPIO.BCM)
-INPUT_PIN = 4 # BCM 23
-GPIO.setup (INPUT, GPIO.IN) # set this input pin to be an input.
+INPUT_PIN = 25 # BCM 23
+GPIO.setup (INPUT_PIN, GPIO.IN) # set this input pin to be an input.
 
 # create a function to run when the pin is high.
 def inputLow (channel) :
